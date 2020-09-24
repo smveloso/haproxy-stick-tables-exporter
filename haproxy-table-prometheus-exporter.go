@@ -32,13 +32,13 @@ var (
 	socket   = flag.String("socket", "/var/haproxy/admin.sock", "Unix socket to reach haproxy.")
 	interval = flag.Int64("interval", 5, "Sleep interval between haproxy data colletctions.")
 
-	namespace = "trt3"
-	subsystem = "haproxy"
+	namespace = flag.String("namespace", "smveloso", "Namespace for prometheus metrics.")
+	subsystem = flag.String("subsystem", "haproxy", "Subsystem for prometheus metrics.")
 
 	// numero de entradas em uma tabela stick-table
 	entries = prometheus.NewGaugeVec(prometheus.GaugeOpts{
-		Namespace: namespace,
-		Subsystem: subsystem,
+		Namespace: *namespace,
+		Subsystem: *subsystem,
 		Name:      "sticktable_curr_entries",
 		Help:      "Number of entries in the stick-table.",
 	},
@@ -46,8 +46,8 @@ var (
 	)
 
 	tcpConnRate = prometheus.NewHistogramVec(prometheus.HistogramOpts{
-		Namespace: namespace,
-		Subsystem: subsystem,
+		Namespace: *namespace,
+		Subsystem: *subsystem,
 		Name:      "sticktable_tcp_conn_rate",
 		Help:      "TCP connection rates.",
 		Buckets:   prometheus.LinearBuckets(0, 10, 40), // TODO parametrizar os buckets
@@ -56,8 +56,8 @@ var (
 	)
 
 	httpReqRate = prometheus.NewHistogramVec(prometheus.HistogramOpts{
-		Namespace: namespace,
-		Subsystem: subsystem,
+		Namespace: *namespace,
+		Subsystem: *subsystem,
 		Name:      "sticktable_http_req_rate",
 		Help:      "HTTP request rates.",
 		Buckets:   prometheus.LinearBuckets(0, 10, 40), // TODO parametrizar os buckets
