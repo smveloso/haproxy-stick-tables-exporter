@@ -34,9 +34,9 @@ services:
       - "3000:3000"
     volumes:
       - ./grafana/data:/var/lib/grafana
-  loader:
+  stress:
     build:
-      context: ./loader
-    image: TODOTODOTODOTODO/loader
+      context: ./stress
+    image: smveloso/stress:latest
     cap_add:
       - NET_ADMIN
