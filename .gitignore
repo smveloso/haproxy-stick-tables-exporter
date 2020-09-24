@@ -13,3 +13,8 @@
 
 # Dependency directories (remove the comment below to include it)
 # vendor/
+
+misc/prospeccao/haproxy/logs
+misc/prospeccao/prometheus/data
+misc/prospeccao/grafana/data
+haproxy-table-prometheus-exporter

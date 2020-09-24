@@ -1,0 +1,46 @@
+version: '3'
+services:
+  httpd:
+#    command:
+#      - "/usr/local/apache2/bin/apachectl"
+#      - "-t"
+#      - "-DDUMP_VHOSTS"
+    ports:
+      - "8081:80"
+    volumes:
+      - ./httpd/conf:/usr/local/apache2/conf
+      - ./httpd/data/default:/usr/local/apache2/htdocs/default
+    image: "httpd:2.4.41-alpine"
+  haproxy:
+    ports:
+      - "8080:80"
+      - "8443:443"
+      - "1936:1936"
+      - "10253:10253"
+    volumes:
+      - ./haproxy/conf:/usr/local/etc/haproxy
+      - ./haproxy/socket:/var/haproxy
+    image: "haproxy:2.0.5-alpine"
+  syslog:
+    volumes:
+      - ./haproxy/logs:/var/log
+    image: "balabit/syslog-ng:latest"
+  prometheus:
+    image: "prom/prometheus:v2.20.0"
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus/config:/etc/prometheus
+      - ./prometheus/data:/prometheus
+  grafana:
+    image: "grafana/grafana:7.1.5"
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./grafana/data:/var/lib/grafana
+  loader:
+    build:
+      context: ./loader
+    image: TODOTODOTODOTODO/loader
+    cap_add:
+      - NET_ADMIN
