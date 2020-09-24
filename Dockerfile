@@ -7,7 +7,7 @@ COPY go.mod .
 COPY go.sum .
 RUN go install -v
 FROM debian:stretch
-WORKDIR .
+WORKDIR /
 COPY --from=0 /go/bin/haproxy-table-prometheus-exporter.go .
 ENTRYPOINT ["./haproxy-table-prometheus-exporter.go"]
 
