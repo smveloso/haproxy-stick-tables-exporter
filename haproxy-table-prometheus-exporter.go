@@ -35,6 +35,15 @@ var (
 	namespace = flag.String("namespace", "smveloso", "Namespace for prometheus metrics.")
 	subsystem = flag.String("subsystem", "haproxy", "Subsystem for prometheus metrics.")
 
+	entries     *prometheus.GaugeVec
+	tcpConnRate *prometheus.HistogramVec
+	httpReqRate *prometheus.HistogramVec
+
+	tableMetricsSlice = make([]tableMetrics, 0, 8)
+)
+
+func register() {
+
 	// numero de entradas em uma tabela stick-table
 	entries = prometheus.NewGaugeVec(prometheus.GaugeOpts{
 		Namespace: *namespace,
@@ -65,10 +74,6 @@ var (
 		[]string{"table", "interval"},
 	)
 
-	tableMetricsSlice = make([]tableMetrics, 0, 8)
-)
-
-func register() {
 	prometheus.MustRegister(entries)
 	prometheus.MustRegister(tcpConnRate)
 	prometheus.MustRegister(httpReqRate)

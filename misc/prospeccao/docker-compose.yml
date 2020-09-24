@@ -6,6 +6,13 @@ services:
     image: smveloso/haproxy-stick-tables-exporter:latest
     volumes:
       - ./haproxy/socket:/var/haproxy
+    ports:
+      - "9752:9752"
+    command: 
+      - "-namespace"
+      - "acme"
+      #- "-subsystem"
+      #- "haproxyx"
   httpd:
     ports:
       - "8081:80"
