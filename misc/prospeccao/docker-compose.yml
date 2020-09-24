@@ -1,5 +1,11 @@
 version: '3'
 services:
+  exporter:
+    build:
+      context: ../..
+    image: smveloso/haproxy-stick-tables-exporter:latest
+    volumes:
+      - ./haproxy/socket:/var/haproxy
   httpd:
     ports:
       - "8081:80"
