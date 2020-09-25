@@ -10,9 +10,17 @@ services:
       - "9752:9752"
     command: 
       - "-namespace"
-      - "acme"
+      - "acme2"
       #- "-subsystem"
       #- "haproxyx"
+      - "-tcpConnRateBucketCount"
+      - "20"
+      - "-tcpConnRateBucketWidth"
+      - "5"
+      - "-httpReqRateBucketCount"
+      - "20"
+      - "-httpReqRateBucketWidth"
+      - "5"
   httpd:
     ports:
       - "8081:80"

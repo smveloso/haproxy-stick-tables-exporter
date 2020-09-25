@@ -39,6 +39,14 @@ var (
 	tcpConnRate *prometheus.HistogramVec
 	httpReqRate *prometheus.HistogramVec
 
+	tcpConnRateBucketStart = flag.Float64("tcpConnRateBucketStart", 0, "Lower bound for tcp conn rate buckets")
+	tcpConnRateBucketWidth = flag.Float64("tcpConnRateBucketWidth", 10, "Width for tcp conn rate buckets")
+	tcpConnRateBucketCount = flag.Int("tcpConnRateBucketCount", 10, "Count of tcp conn rate buckets")
+
+	httpReqRateBucketStart = flag.Float64("httpReqRateBucketStart", 0, "Lower bound for http req rate buckets")
+	httpReqRateBucketWidth = flag.Float64("httpReqRateBucketWidth", 10, "Width for http req rate buckets")
+	httpReqRateBucketCount = flag.Int("httpReqRateBucketCount", 10, "Count of http req rate buckets")
+
 	tableMetricsSlice = make([]tableMetrics, 0, 8)
 )
 
@@ -59,7 +67,7 @@ func register() {
 		Subsystem: *subsystem,
 		Name:      "sticktable_tcp_conn_rate",
 		Help:      "TCP connection rates.",
-		Buckets:   prometheus.LinearBuckets(0, 10, 40), // TODO parametrizar os buckets
+		Buckets:   prometheus.LinearBuckets(*tcpConnRateBucketStart, *tcpConnRateBucketWidth, *tcpConnRateBucketCount),
 	},
 		[]string{"table", "interval"},
 	)
@@ -69,7 +77,7 @@ func register() {
 		Subsystem: *subsystem,
 		Name:      "sticktable_http_req_rate",
 		Help:      "HTTP request rates.",
-		Buckets:   prometheus.LinearBuckets(0, 10, 40), // TODO parametrizar os buckets
+		Buckets:   prometheus.LinearBuckets(*httpReqRateBucketStart, *httpReqRateBucketWidth, *httpReqRateBucketCount),
 	},
 		[]string{"table", "interval"},
 	)
